@@ -52,14 +52,21 @@ function addToInventory(id, name) {
 function updateInventory() {
     inventoryMenu.replaceChildren();
     let invLength = inventoryContent.length;
-    const invItem = document.createElement("div");
-    const invIcon = document.createElement("img");
-    const invName = document.createElement("p");
     for (let i = 0; i < invLength; i++) {
+        console.log(i)    
+        const invItem = document.createElement("div");
+        const invIcon = document.createElement("img");
+        const invName = document.createElement("p");
+        const invQuantity = document.createElement("p")
+
         invName.appendChild(document.createTextNode(inventoryContent[i].name))
+        invQuantity.appendChild(document.createTextNode(inventoryContent[i].quantity))
+        invQuantity.classList.add("invQuantity")
         invIcon.src = inventoryContent[i].getImageSource()
         invItem.appendChild(invIcon)
         invItem.appendChild(invName)
-        inventoryMenu.appendChild(invItem)
+        invItem.appendChild(invQuantity)
+        inventoryMenu.append(invItem)
+
     }
 }
