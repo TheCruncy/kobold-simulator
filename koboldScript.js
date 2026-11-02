@@ -19,8 +19,8 @@ class Item {
         this.name = name;
     }
     quantity = 1;
-    getImageSource() {
-        return `/assets/images/${this.id}.png`;
+    getImageSource () {
+        return `assets/images/${this.id}.png`;
     }
 }
 
@@ -55,11 +55,11 @@ function updateInventory() {
     const invItem = document.createElement("div");
     const invIcon = document.createElement("img");
     const invName = document.createElement("p");
-    for (let i = 0; i <= invLength; i++) {
+    for (let i = 0; i < invLength; i++) {
         invName.appendChild(document.createTextNode(inventoryContent[i].name))
+        invIcon.src = inventoryContent[i].getImageSource()
         invItem.appendChild(invIcon)
         invItem.appendChild(invName)
         inventoryMenu.appendChild(invItem)
-
     }
 }
