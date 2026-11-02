@@ -30,43 +30,44 @@ function addToInventory(id, name) {
     let currentItem = 0
     // checks if the inventory has the item in it already
     for (let i = 0; i <= invLength; i++) {
-        console.log("searching")
         if (inventoryContent[i]?.id === id) {
-            console.log("Match found");
             idMatch = true;
-            currentItem = i
+            currentItem = i;
             break;
         }
     }
     if (idMatch === true) {
-        console.log("Attempting to increase quantity of " + name)
         inventoryContent[currentItem].quantity += 1
     }
     else {
         inventoryContent.push(new Item(id, name))
     }
-    console.log(inventoryContent);
-    updateInventory();
+    updateInventory(id);
 }
 
-function updateInventory() {
+function updateInventory(x) {
     inventoryMenu.replaceChildren();
     let invLength = inventoryContent.length;
     for (let i = 0; i < invLength; i++) {
-        console.log(i)    
-        const invItem = document.createElement("div");
-        const invIcon = document.createElement("img");
-        const invName = document.createElement("p");
-        const invQuantity = document.createElement("p")
+        if (inventoryMenu.querySelector(`#${x}`) !== null) {
+            console.log("AUGHHH") 
+        } else {
+            console.log("Obliterate")
+            const invItem = document.createElement("div");
+            const invIcon = document.createElement("img");
+            const invName = document.createElement("p");
+            const invQuantity = document.createElement("p")
 
-        invName.appendChild(document.createTextNode(inventoryContent[i].name))
-        invQuantity.appendChild(document.createTextNode(inventoryContent[i].quantity))
-        invQuantity.classList.add("invQuantity")
-        invIcon.src = inventoryContent[i].getImageSource()
-        invItem.appendChild(invIcon)
-        invItem.appendChild(invName)
-        invItem.appendChild(invQuantity)
-        inventoryMenu.append(invItem)
-
+            invName.appendChild(document.createTextNode(inventoryContent[i].name))
+            invQuantity.appendChild(document.createTextNode(inventoryContent[i].quantity))
+            invQuantity.classList.add("invQuantity")
+            invIcon.src = inventoryContent[i].getImageSource()
+            invItem.appendChild(invIcon)
+            invItem.appendChild(invName)
+            invItem.appendChild(invQuantity)
+            inventoryMenu.append(invItem)
+            invItem.id = inventoryContent[i].id
+        }
     }
 }
+
