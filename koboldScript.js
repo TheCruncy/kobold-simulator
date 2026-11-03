@@ -3,7 +3,7 @@ const craftingGame = document.querySelector("#craftingGame");
 const craftingGamePointer = document.querySelector("#craftingGamePointer");
 const inventory = document.querySelector("#inventory");
 const inventoryMenu = document.querySelector("#inventoryMenu")
-const inventoryContent = [ ]
+const inventoryContent = {}
 
 let leftMenuActive = miningGame;
 
@@ -25,49 +25,51 @@ class Item {
 }
 
 function addToInventory(id, name) {
-    let invLength = inventoryContent.length
-    let idMatch = false
-    let currentItem = 0
-    // checks if the inventory has the item in it already
-    for (let i = 0; i <= invLength; i++) {
-        if (inventoryContent[i]?.id === id) {
-            idMatch = true;
-            currentItem = i;
-            break;
-        }
-    }
-    if (idMatch === true) {
-        inventoryContent[currentItem].quantity += 1
+    if (id in inventoryContent) {
+        inventoryContent[id].quantity += 1
     }
     else {
-        inventoryContent.push(new Item(id, name))
+        inventoryContent[id] = new Item(id, name)
     }
-    updateInventory(id);
+    updateInventory(id)
+}
+
+function obliterateItem(id) {
+    if (id in inventoryContent) {
+        inventoryContent[id].quantity = 0
+        updateInventory(id)
+    } else {
+        console.log(inventoryContent)
+        console.log("Can't see it man")
+    }
 }
 
 function updateInventory(x) {
-    inventoryMenu.replaceChildren();
-    let invLength = inventoryContent.length;
-    for (let i = 0; i < invLength; i++) {
-        if (inventoryMenu.querySelector(`#${x}`) !== null) {
-            console.log("AUGHHH") 
+    if (inventoryMenu.querySelector(`#${x}`) !== null) {
+        if (inventoryContent[x].quantity <= 0) {
+            inventoryMenu.removeChild(inventoryMenu.querySelector(`#${x}`));
+            delete inventoryContent[x]
         } else {
-            console.log("Obliterate")
-            const invItem = document.createElement("div");
-            const invIcon = document.createElement("img");
-            const invName = document.createElement("p");
-            const invQuantity = document.createElement("p")
-
-            invName.appendChild(document.createTextNode(inventoryContent[i].name))
-            invQuantity.appendChild(document.createTextNode(inventoryContent[i].quantity))
-            invQuantity.classList.add("invQuantity")
-            invIcon.src = inventoryContent[i].getImageSource()
-            invItem.appendChild(invIcon)
-            invItem.appendChild(invName)
-            invItem.appendChild(invQuantity)
-            inventoryMenu.append(invItem)
-            invItem.id = inventoryContent[i].id
+            let invQuantity = document.querySelector(`#${x}Quantity`)
+            invQuantity.textContent = inventoryContent[x].quantity
         }
+    } else {
+        const invItem = document.createElement("div");
+        const invIcon = document.createElement("img");
+        const invName = document.createElement("p");
+        const invQuantity = document.createElement("p")
+
+        invName.appendChild(document.createTextNode(inventoryContent[x].name))
+        invQuantity.appendChild(document.createTextNode(inventoryContent[x].quantity))
+        invQuantity.classList.add(`invQuantity`)
+        invQuantity.id = `${x}Quantity`
+        invIcon.src = inventoryContent[x].getImageSource()
+        invItem.appendChild(invIcon)
+        invItem.appendChild(invName)
+        invItem.appendChild(invQuantity)
+        inventoryMenu.append(invItem)
+        invItem.id = inventoryContent[x].id
     }
 }
+
 

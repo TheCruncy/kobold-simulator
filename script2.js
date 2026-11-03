@@ -1,22 +1,22 @@
-inventory = []
+const inventory = {}
 
 class myDict {
-    constructor() {
-        this.container= {};
-    }
     put(key, value) {
-        this.container[key] = value;
-    }
-    hasKey(key) {
-        return key in this.container;
+        this[key] = value;
     }
 }
 
 function createNewItem(name) {
-    name = new myDict;
-    name.put("id" , 5)
-    inventory.push(name)
-    console.log(inventory)
+    let newItem = new myDict;
+    newItem.put(`id` , name)
+    inventory[name] = newItem
+    console.log(inventory[name])
 }
 
-
+function searchForItem(name) {
+    if (name in inventory) {
+        console.log(inventory[name].id)
+    } else {
+        console.log("Fuuck")
+    }
+}
